@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel='stylesheet' href='assets/css/style.css'>
+    <link rel='stylesheet' href='assets/css/sweet-alert.css'>
     <link rel='shortcut icon' href='assets/data_favicon.png' />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title> Vitrine </title>
@@ -23,7 +24,7 @@
                         <input type="text" placeholder="Siren a 9 chiffres..." name="siren" id="siren" autocomplete="off">
                     </div>
                     <div class="content-button">
-                        <input class="button" type="button" value="Envoyer" id="button" onclick="get_siren()">
+                        <input class="button" type="button" value="Envoyer" id="button" onclick="get_data()">
                     </div>
                 </div>
             </form>
@@ -31,4 +32,6 @@
     </div>
 </body>
 <script src='assets/js/script.js'></script>
+<script src='assets/vendor/jquery-3.4.1.min.js'></script>
+<script src='assets/vendor/sweet-alert.js'></script>
 </html>
