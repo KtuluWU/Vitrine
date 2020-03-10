@@ -12,26 +12,122 @@
 
 <body>
     <div class="container">
-        <div class="topbar">
-            <div class="logo"></div>
-            <div class="title">Vitrine du WebService</div>
-        </div>
-        <div class="body">
-            <form id="form_siren_saisi" name="form_siren_saisi" action="" method="POST">
-                <div class="content">
-                    <div class="content-title">Veuillez saisir un siren</div>
+        <div class="title">Vitrine</div>
+        <div class="subtitle">WebService Commerçant</div>
+        <form id="form_data_saisi" name="form_data_saisi" action="" method="POST">
+            <div class="content">
+                <div class="area left">
+                    <div>Requêtes</div>
                     <div class="content-input">
-                        <input type="text" placeholder="Siren a 9 chiffres..." name="siren" id="siren" autocomplete="off">
+                        <div class="input-block">
+                            <span class="input">
+                                <input class="input_field" type="text" placeholder="Siren a 9 chiffres..." name="siren"
+                                    id="siren" autocomplete="off">
+                                <label class="input_label" for="siren"><span
+                                        class="input_label-content">Siren</span></label>
+                            </span>
+                        </div>
+                        <div class="input-block">
+                            <span class="input">
+                                <input class="input_field" type="text" name="nic" id="nic" autocomplete="off">
+                                <label class="input_label" for="nic"><span class="input_label-content">nic
+                                        (option)</span></label>
+                            </span>
+                        </div>
+                        <div class="input-block">
+                            <span class="input">
+                                <input class="input_field" type="text" name="documentId" id="documentId"
+                                    autocomplete="off">
+                                <label class="input_label" for="documentId"><span class="input_label-content">Document
+                                        ID</span></label>
+                            </span>
+                        </div>
+                        <div class="input-block">
+                            <span class="input">
+                                <input class="input_field" type="text" name="modesDiffusion" id="modesDiffusion"
+                                    autocomplete="off">
+                                <label class="input_label" for="modesDiffusion"><span class="input_label-content">Modes
+                                        Diffusion ('T': téléchargement 'XL': XML)</span></label>
+                            </span>
+                        </div>
+                        <div class="input-block">
+                            <span class="input">
+                                <input class="input_field" type="email" name="email" id="email" autocomplete="on">
+                                <label class="input_label" for="email"><span
+                                        class="input_label-content">Email</span></label>
+                            </span>
+                        </div>
+                        <div>Veuillez choisir des réponses:</div>
+                        <div class="checkbox-block">
+                            <div class="checkbox">
+                                <input type="checkbox" name="entreprise" id="entreprise" value="entreprise">
+                                <label for="entreprise" class="checkbox_label">Entreprise</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" name="dernierStatut" id="dernierStatut" value="dernierStatut">
+                                <label for="dernierStatut" class="checkbox_label">Dernier Statut</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" name="bilan" id="bilan" value="bilan">
+                                <label for="bilan" class="checkbox_label">Bilan</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" name="depotActes" id="depotActes" value="depotActes">
+                                <label for="depotActes" class="checkbox_label">Depot Actes</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" name="document_data" id="document_data" value="document_data">
+                                <label for="document_data" class="checkbox_label">Document</label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" name="commande" id="commande" value="commande">
+                                <label for="commande" class="checkbox_label">Commande</label>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="content-button">
-                        <input class="button" type="button" value="Envoyer" id="button" onclick="get_data()">
+                        <input class="button" type="button" value="Envoyer" name="button" id="button"
+                            onclick="get_data()">
                     </div>
                 </div>
-            </form>
+                <div class="area right">
+                    <div class="res_title">Réponses</div>
+                    <div class="res_content" id="area_responses">NULL</div>
+                </div>
+            </div>
+        </form>
+        <div class="loading">
+            <img class="loading_gif" id="loading_gif" alt="Chargement..." src="assets/loading_gr.gif">
         </div>
     </div>
 </body>
 <script src='assets/js/script.js'></script>
 <script src='assets/vendor/jquery-3.4.1.min.js'></script>
 <script src='assets/vendor/sweet-alert.js'></script>
+<script src='assets/vendor/classie.js'></script>
+<script>
+    (function () {
+        [].slice.call(document.querySelectorAll('input.input_field')).forEach(function (inputEl) {
+            if (inputEl.value.trim() !== '') {
+                classie.add(inputEl.parentNode, 'input-filled');
+            }
+
+            // events:
+            inputEl.addEventListener('focus', onInputFocus);
+            inputEl.addEventListener('blur', onInputBlur);
+        });
+
+        function onInputFocus(ev) {
+            classie.add(ev.target.parentNode, 'input-filled');
+        }
+
+        function onInputBlur(ev) {
+            if (ev.target.value.trim() === '') {
+                classie.remove(ev.target.parentNode, 'input-filled');
+            }
+        }
+    })();
+</script>
+
 </html>

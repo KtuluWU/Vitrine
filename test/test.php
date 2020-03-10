@@ -1,34 +1,41 @@
 <?php
-$soapUrl = "https://webservices.infogreffe.fr/services/commercant-service/ws/commercant.wsdl";
-$soapUser = '0003-0009';
-$soapPassword = "SUPPORT";
 
-class vitrineRequest {
-    public function __construct($siren, $nic) 
-    {
-        $this->siren = $siren;
-        $this->nic = $nic;
-    }
+@$siren = $_POST["siren"];
+@$nic = $_POST["nic"];
+@$documentId = $_POST["documentId"];
+@$modesDiffusion = $_POST["modesDiffusion"];
+@$email = $_POST["email"];
+@$entreprise = $_POST["entreprise"];
+@$dernierStatut = $_POST["dernierStatut"];
+@$bilan = $_POST["bilan"];
+@$depotActes = $_POST["depotActes"];
+@$document_data = $_POST["document_data"];
+@$commande = $_POST["commande"];
+
+var_dump($siren);
+echo "<hr>";
+var_dump($nic);
+echo "<hr>";
+var_dump($documentId);
+echo "<hr>";
+var_dump($modesDiffusion);
+echo "<hr>";
+var_dump($email);
+echo "<hr>";
+var_dump($entreprise);
+echo "<hr>";
+var_dump($dernierStatut);
+echo "<hr>";
+var_dump($bilan);
+echo "<hr>";
+var_dump($depotActes);
+echo "<hr>";
+var_dump($document_data);
+echo "<hr>";
+var_dump($commande);
+
+if ($nic) {
+    echo "yes nic";
+} else {
+    echo "no nic";
 }
-
-$options = array(
-    'login' => $soapUser,
-    'password' => $soapPassword
-);
-
-$client = new SoapClient($soapUrl, array("login" => $soapUser, "password" => $soapPassword));
-$client->__setLocation('https://webservices.infogreffe.fr/services/commercant-service/ws');
-$vitrineRequest = new vitrineRequest(421268285, '');
-
-$params = array(
-    "vitrineRequest" => $vitrineRequest
-);
-
-
-try {
-    $response = $client->__soapCall("vitrine", $params);
-}
-catch (SoapFault $exception) {
-    echo $exception;
-}
-var_dump(json_decode(json_encode($response), true));

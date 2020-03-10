@@ -1,12 +1,72 @@
 console.log("Auteur: Yun WU");
 
 function get_data() {
-    var siren = document.form_siren_saisi.siren.value;
+    var siren = document.form_data_saisi.siren.value;
+    var nic = document.form_data_saisi.nic.value.replace(/\s+/g, "");
+    var documentId = document.form_data_saisi.documentId.value.replace(/\s+/g, "");
+    var modesDiffusion = document.form_data_saisi.modesDiffusion.value.replace(/\s+/g, "");
+    var email = document.form_data_saisi.email.value.replace(/\s+/g, "");
+    var entreprise = document.form_data_saisi.entreprise;
+    var dernierStatut = document.form_data_saisi.dernierStatut;
+    var bilan = document.form_data_saisi.bilan;
+    var depotActes = document.form_data_saisi.depotActes;
+    var document_data = document.form_data_saisi.document_data;
+    var commande = document.form_data_saisi.commande;
     var url = "./action.php";
+    var data = new FormData();
+    var msg = document.getElementById("area_responses");
+
     siren = siren_checked(siren);
 
     if (siren) {
-        location.href = url+"?"+"siren="+siren;
+        data.append('siren', siren);
+        data.append('nic', nic);
+        if (commande_check(commande.checked, documentId, modesDiffusion) && modesDiffusion_check(commande, modesDiffusion)) {
+            document.getElementById("loading_gif").style.display = "block";
+            data.append('documentId', documentId);
+            data.append('modesDiffusion', modesDiffusion);
+            data.append('email', email);
+            data.append('entreprise', entreprise.checked);
+            data.append('dernierStatut', dernierStatut.checked);
+            data.append('bilan', bilan.checked);
+            data.append('depotActes', depotActes.checked);
+            data.append('document_data', document_data.checked);
+            data.append('commande', commande.checked);
+
+            var ajax = false;
+            if (window.XMLHttpRequest) { //Mozilla 浏览器
+                ajax = new XMLHttpRequest();
+                if (ajax.overrideMimeType) {//设置MiME类别
+                    ajax.overrideMimeType("text/xml");
+                }
+            }
+            else if (window.ActiveXObject) { // IE浏览器
+                try {
+                    ajax = new ActiveXObject("Msxml2.XMLHTTP");
+                } catch (e) {
+                    try {
+                        ajax = new ActiveXObject("Microsoft.XMLHTTP");
+                    } catch (e) { }
+                }
+            }
+            if (!ajax) { // 异常，创建对象实例失败
+                window.alert("不能创建XMLHttpRequest对象实例.");
+                return false;
+            }
+
+            //开始发送
+            ajax.open("POST", url, true);
+            //ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");//HTTP head
+
+            ajax.send(data);
+
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4 && ajax.status == 200) {
+                    msg.innerHTML = ajax.responseText;
+                    document.getElementById("loading_gif").style.display = "none";
+                }
+            }
+        }
     }
 }
 
@@ -36,4 +96,41 @@ function siren_checked(siren) {
         }
     }
     return siren;
+}
+
+function commande_check(commande, documentId, modesDiffusion) {
+    if (commande) {
+        if (!documentId) {
+            swal({
+                title: "Échoué!",
+                text: "Le Document ID est obligatoire pour la requête <Commande>",
+                type: "error"
+            })
+            return false;
+        } else if (!modesDiffusion) {
+            swal({
+                title: "Échoué!",
+                text: "Le Mode Diffusion est obligatoire pour la requête <Commande>",
+                type: "error"
+            })
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
+}
+
+function modesDiffusion_check(commande, modesDiffusion) {
+    if (commande && modesDiffusion != "T" && modesDiffusion != "XL") {
+        swal({
+            title: "Échoué!",
+            text: "Modes de Diffusion non autorisés, ils doivent être \"T\" ou \"XL\" ",
+            type: "error"
+        })
+        return false;
+    } else {
+        return true;
+    }
 }
