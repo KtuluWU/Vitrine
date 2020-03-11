@@ -2,19 +2,24 @@
 ini_set('max_execution_time', '12000');
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
-$data = include 'config.php';
+$data = include '../config.php';
 
 @$siren = $_POST["siren"];
 @$nic = $_POST["nic"];
-@$documentId = $_POST["documentId"];
-@$modesDiffusion = $_POST["modesDiffusion"];
-@$email = $_POST["email"];
-@$entreprise = $_POST["entreprise"];
 @$dernierStatut = $_POST["dernierStatut"];
-@$bilan = $_POST["bilan"];
 @$depotActes = $_POST["depotActes"];
-@$document_data = $_POST["document_data"];
-@$commande = $_POST["commande"];
+@$commandes = $_POST["commandes"];
+@$bilans = $_POST["bilans"]
+@$documents = $_POST["documents_data"];
+
+$bilans_r = explode(",", $bilans);
+$documents_pre_r = explode(",", $documents);
+$documents_id = array();
+$documents_modesdiffusion = array();
+foreach($documents_pre_r as $document_pre) {
+    array_push($documents_id, substr($document_pre,0,strpos($document_pre, '&')));
+    array_push($documents_modesdiffusion, substr($document_pre,strpos($document_pre,'&')+1));
+}
 
 $soapUrl = $data['soapUrl'];
 $soapUser = $data['soapUser'];

@@ -2,40 +2,39 @@
 
 @$siren = $_POST["siren"];
 @$nic = $_POST["nic"];
-@$documentId = $_POST["documentId"];
-@$modesDiffusion = $_POST["modesDiffusion"];
-@$email = $_POST["email"];
-@$entreprise = $_POST["entreprise"];
 @$dernierStatut = $_POST["dernierStatut"];
-@$bilan = $_POST["bilan"];
 @$depotActes = $_POST["depotActes"];
-@$document_data = $_POST["document_data"];
-@$commande = $_POST["commande"];
+@$documents = $_POST["documents_data"];
+@$commandes = $_POST["commandes"];
+@$bilans = $_POST["bilans"];
+
+$bilans_r = explode(",", $bilans);
+$documents_pre_r = explode(",", $documents);
+$documents_id = array();
+$documents_modesdiffusion = array();
+foreach($documents_pre_r as $document_pre) {
+    array_push($documents_id, substr($document_pre,0,strpos($document_pre, '&')));
+    array_push($documents_modesdiffusion, substr($document_pre,strpos($document_pre,'&')+1));
+}
 
 var_dump($siren);
 echo "<hr>";
 var_dump($nic);
 echo "<hr>";
-var_dump($documentId);
-echo "<hr>";
-var_dump($modesDiffusion);
-echo "<hr>";
-var_dump($email);
-echo "<hr>";
-var_dump($entreprise);
+var_dump($commandes);
 echo "<hr>";
 var_dump($dernierStatut);
 echo "<hr>";
-var_dump($bilan);
-echo "<hr>";
 var_dump($depotActes);
 echo "<hr>";
-var_dump($document_data);
+var_dump($bilans);
 echo "<hr>";
-var_dump($commande);
+var_dump($documents);
+echo "<hr>";
+var_dump($documents_pre_r);
+echo "<hr>";
+var_dump($documents_id);
+echo "<hr>";
+var_dump($documents_modesdiffusion);
+echo "<hr>";
 
-if ($nic) {
-    echo "yes nic";
-} else {
-    echo "no nic";
-}

@@ -1,84 +1,88 @@
 console.log("Auteur: Yun WU");
 
-function get_data() {
-    var siren = document.form_data_saisi.siren.value;
-    var nic = document.form_data_saisi.nic.value.replace(/\s+/g, "");
-    var documentId = document.form_data_saisi.documentId.value.replace(/\s+/g, "");
-    var modesDiffusion = document.form_data_saisi.modesDiffusion.value.replace(/\s+/g, "");
-    var email = document.form_data_saisi.email.value.replace(/\s+/g, "");
-    var entreprise = document.form_data_saisi.entreprise.checked;
-    var dernierStatut = document.form_data_saisi.dernierStatut.checked;
-    var bilan = document.form_data_saisi.bilan.checked;
-    var depotActes = document.form_data_saisi.depotActes.checked;
-    var document_data = document.form_data_saisi.document_data.checked;
-    var commande = document.form_data_saisi.commande.checked;
-    var url = "./action.php";
-    var data = new FormData();
-    var msg = document.getElementById("area_responses");
+function get_siren() {
+    var siren = document.form_siren.siren.value.replace(/\s+/g, "");
+    var nic = document.form_siren.nic.value.replace(/\s+/g, "");
+    var url = "./action/vitrine.php";
 
     siren = siren_checked(siren);
 
     if (siren) {
+        window.location.href = url + "?siren=" + siren + "&nic=" + nic;
+    }
+}
+
+function get_data() {
+    var siren = document.form_res_saisi.siren.value;
+    var nic = document.form_res_saisi.nic.value;
+    var dernierStatut = document.form_res_saisi.dernierStatut.checked;
+    var bilan = document.form_res_saisi.bilan;
+    var depotActes = document.form_res_saisi.depotActes.checked;
+    var document_data = document.form_res_saisi.document_data;
+    var commandes = document.form_res_saisi.commande.checked;
+    var url = "../test/test.php";
+    var data = new FormData();
+    var msg = document.getElementById("area_responses");
+
+
+    var bilans = getSelectValues(bilan);
+    var documents = getSelectValues(document_data);
+
+
+    if (!dernierStatut && !bilan && !depotActes && !document_data && !commandes) {
+        swal({
+            title: "Échoué!",
+            text: "Veuillez choisir au moins une réponse!",
+            type: "error"
+        })
+        return false;
+    } else {
+        document.getElementById("loading_gif").style.display = "block";
         data.append('siren', siren);
         data.append('nic', nic);
-        if (!entreprise && !dernierStatut && !bilan && !depotActes && !document_data && !commande) {
-            swal({
-                title: "Échoué!",
-                text: "Veuillez choisir au moins une réponse!",
-                type: "error"
-            })
-            return false;
-        }else if (commande_check(commande, documentId, modesDiffusion) && modesDiffusion_check(commande, modesDiffusion)) {
-            document.getElementById("loading_gif").style.display = "block";
-            data.append('documentId', documentId);
-            data.append('modesDiffusion', modesDiffusion);
-            data.append('email', email);
-            data.append('entreprise', entreprise);
-            data.append('dernierStatut', dernierStatut);
-            data.append('bilan', bilan);
-            data.append('depotActes', depotActes);
-            data.append('document_data', document_data);
-            data.append('commande', commande);
+        data.append('dernierStatut', dernierStatut);
+        data.append('bilans', bilans);
+        data.append('depotActes', depotActes);
+        data.append('documents_data', documents);
+        data.append('commandes', commandes);
 
-            var ajax = false;
-            if (window.XMLHttpRequest) { //Mozilla 浏览器
-                ajax = new XMLHttpRequest();
-                if (ajax.overrideMimeType) {//设置MiME类别
-                    ajax.overrideMimeType("text/xml");
-                }
+        var ajax = false;
+        if (window.XMLHttpRequest) { //Mozilla 浏览器
+            ajax = new XMLHttpRequest();
+            if (ajax.overrideMimeType) {//设置MiME类别
+                ajax.overrideMimeType("text/xml");
             }
-            else if (window.ActiveXObject) { // IE浏览器
+        }
+        else if (window.ActiveXObject) { // IE浏览器
+            try {
+                ajax = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
                 try {
-                    ajax = new ActiveXObject("Msxml2.XMLHTTP");
-                } catch (e) {
-                    try {
-                        ajax = new ActiveXObject("Microsoft.XMLHTTP");
-                    } catch (e) { }
-                }
+                    ajax = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) { }
             }
-            if (!ajax) { // 异常，创建对象实例失败
-                window.alert("不能创建XMLHttpRequest对象实例.");
-                return false;
-            }
+        }
+        if (!ajax) { // 异常，创建对象实例失败
+            window.alert("不能创建XMLHttpRequest对象实例.");
+            return false;
+        }
 
-            //开始发送
-            ajax.open("POST", url, true);
-            //ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");//HTTP head
+        //开始发送
+        ajax.open("POST", url, true);
+        //ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");//HTTP head
 
-            ajax.send(data);
+        ajax.send(data);
 
-            ajax.onreadystatechange = function () {
-                if (ajax.readyState == 4 && ajax.status == 200) {
-                    msg.innerHTML = ajax.responseText;
-                    document.getElementById("loading_gif").style.display = "none";
-                }
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                msg.innerHTML = ajax.responseText;
+                document.getElementById("loading_gif").style.display = "none";
             }
         }
     }
 }
 
 function siren_checked(siren) {
-    siren = siren.replace(/\s+/g, "");
     var len = siren.length;
 
     if (len == 0) {
@@ -140,4 +144,19 @@ function modesDiffusion_check(commande, modesDiffusion) {
     } else {
         return true;
     }
+}
+
+function getSelectValues(select) {
+    var result = [];
+    var options = select && select.options;
+    var opt;
+
+    for (var i = 0, iLen = options.length; i < iLen; i++) {
+        opt = options[i];
+
+        if (opt.selected) {
+            result.push(opt.value || opt.text);
+        }
+    }
+    return result;
 }
