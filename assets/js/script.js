@@ -6,12 +6,12 @@ function get_data() {
     var documentId = document.form_data_saisi.documentId.value.replace(/\s+/g, "");
     var modesDiffusion = document.form_data_saisi.modesDiffusion.value.replace(/\s+/g, "");
     var email = document.form_data_saisi.email.value.replace(/\s+/g, "");
-    var entreprise = document.form_data_saisi.entreprise;
-    var dernierStatut = document.form_data_saisi.dernierStatut;
-    var bilan = document.form_data_saisi.bilan;
-    var depotActes = document.form_data_saisi.depotActes;
-    var document_data = document.form_data_saisi.document_data;
-    var commande = document.form_data_saisi.commande;
+    var entreprise = document.form_data_saisi.entreprise.checked;
+    var dernierStatut = document.form_data_saisi.dernierStatut.checked;
+    var bilan = document.form_data_saisi.bilan.checked;
+    var depotActes = document.form_data_saisi.depotActes.checked;
+    var document_data = document.form_data_saisi.document_data.checked;
+    var commande = document.form_data_saisi.commande.checked;
     var url = "./action.php";
     var data = new FormData();
     var msg = document.getElementById("area_responses");
@@ -21,17 +21,24 @@ function get_data() {
     if (siren) {
         data.append('siren', siren);
         data.append('nic', nic);
-        if (commande_check(commande.checked, documentId, modesDiffusion) && modesDiffusion_check(commande, modesDiffusion)) {
+        if (!entreprise && !dernierStatut && !bilan && !depotActes && !document_data && !commande) {
+            swal({
+                title: "Échoué!",
+                text: "Veuillez choisir au moins une réponse!",
+                type: "error"
+            })
+            return false;
+        }else if (commande_check(commande, documentId, modesDiffusion) && modesDiffusion_check(commande, modesDiffusion)) {
             document.getElementById("loading_gif").style.display = "block";
             data.append('documentId', documentId);
             data.append('modesDiffusion', modesDiffusion);
             data.append('email', email);
-            data.append('entreprise', entreprise.checked);
-            data.append('dernierStatut', dernierStatut.checked);
-            data.append('bilan', bilan.checked);
-            data.append('depotActes', depotActes.checked);
-            data.append('document_data', document_data.checked);
-            data.append('commande', commande.checked);
+            data.append('entreprise', entreprise);
+            data.append('dernierStatut', dernierStatut);
+            data.append('bilan', bilan);
+            data.append('depotActes', depotActes);
+            data.append('document_data', document_data);
+            data.append('commande', commande);
 
             var ajax = false;
             if (window.XMLHttpRequest) { //Mozilla 浏览器
