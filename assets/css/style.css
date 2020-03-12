@@ -329,6 +329,7 @@ input {
 
 .link_to_res_block {
     margin: 15px 4px;
+    display: flex;
 }
 
 .link_to_res_part {
@@ -347,4 +348,8 @@ input {
     background: #A2C616;
     color: #eee;
     text-decoration: none;
+}
+
+.modesDiffusion {
+    margin-left: 30px;;
 }

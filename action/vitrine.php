@@ -10,9 +10,6 @@ $soapPassword = $data['soapPassword'];
 $siren = $_GET["siren"];
 $nic = $_GET["nic"];
 
-setcookie("siren", $siren);
-setcookie("nic", $nic);
-
 class vitrineRequest
 {
     public function __construct($siren, $nic)
@@ -82,10 +79,19 @@ $documents = $res_vitrine["document"];
                                 <label for="dernierStatut" class="checkbox_label">Dernier Statut</label>
                             </div>
                             <?php } ?>
-                            <?php if ($depotActes) { ?>
+                            <?php if ($depotActes) { 
+                            ?>
                             <div class="checkbox">
-                                <input type="checkbox" name="depotActes" id="depotActes" value="depotActes">
-                                <label for="depotActes" class="checkbox_label">Depot Actes</label>
+                                <span class="select_block">
+                                Dépôt Actes
+                                    <select class="select_depotActes" multiple="multiple" name="depotActe">
+                                        <?php
+                                            foreach($depotActes as $key=>$depotActe) {
+                                                echo "<option value=".$depotActe["numeroDepotInterne"].">".($key+1).". Date:".$depotActe["dateDepot"]." Numéro Dépôt Interne:".$depotActe["numeroDepotInterne"]."</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </span>
                             </div>
                             <?php } ?>
                             <?php if ($bilans) { 
@@ -96,7 +102,7 @@ $documents = $res_vitrine["document"];
                                     <select class="select_bilans" multiple="multiple" name="bilan">
                                         <?php
                                             foreach($bilans as $key=>$bilan) {
-                                                echo "<option value=".$bilan["document"]["ref"].">".($key+1).". Data Clôture:".$bilan["dateCloture"]." Numéro Dépôt:".$bilan["numeroDepot"]."</option>";
+                                                echo "<option value=".$bilan["document"]["ref"].">".($key+1).". Millésime:".$bilan["millesime"]." Numéro Dépôt:".$bilan["numeroDepot"]."</option>";
                                             }
                                         ?>
                                     </select>
@@ -111,7 +117,7 @@ $documents = $res_vitrine["document"];
                                     <select class="select_documents" multiple="multiple" name="document_data">
                                         <?php
                                             foreach($documents as $key=>$document) {
-                                                echo "<option value=".$document["id"]."&".$document["modesDiffusion"]["mode"].">".($key+1).". Type:".$document["type"]." Date:".$document["date"]."</option>";
+                                                echo "<option value=".$document["id"]."&".$document["type"]."&".$document["dateDepot"].">".($key+1).". Type:".$document["type"]." Date:".$document["date"]."</option>";
                                             }
                                         ?>
                                     </select>
@@ -122,6 +128,16 @@ $documents = $res_vitrine["document"];
                             <div class="checkbox">
                                 <input type="checkbox" name="commande" id="commande" value="commande">
                                 <label for="commande" class="checkbox_label">Kabis pour les documents choisis</label>
+                            </div>
+                            <div class="modesDiffusion" style="display:none">Modes Diffusion:
+                                <div class="checkbox">
+                                    <input type="checkbox" name="modesDiffusion_T" id="modesDiffusion_T" value="T">
+                                    <label for="modesDiffusion_T" class="checkbox_label">Téléchargement</label>
+                                </div>
+                                <div class="checkbox">
+                                    <input type="checkbox" name="modesDiffusion_XL" id="modesDiffusion_XL" value="XL">
+                                    <label for="modesDiffusion_XL" class="checkbox_label">XML</label>
+                                </div>
                             </div>
                             <?php } ?>
                         </div>
@@ -165,8 +181,6 @@ $documents = $res_vitrine["document"];
 
 
         (function () {
-            $('.select_bilans').fSelect();
-            $('.select_documents').fSelect();
             [].slice.call(document.querySelectorAll('input.input_field')).forEach(function (inputEl) {
                 if (inputEl.value.trim() !== '') {
                     classie.add(inputEl.parentNode, 'input-filled');
@@ -187,6 +201,19 @@ $documents = $res_vitrine["document"];
                 }
             }
         })();
+
+        $(document).ready(function() {
+            $('.select_bilans').fSelect();
+            $('.select_documents').fSelect();
+            $('.select_depotActes').fSelect();
+            $("input:checkbox[name='commande']").change(function() {
+                if (this.checked) {
+                    $('.modesDiffusion').show(500);
+                } else {
+                    $('.modesDiffusion').hide(500);
+                }
+            });
+        })
     </script>
 </body>
 

@@ -17,17 +17,19 @@ function get_data() {
     var nic = document.form_res_saisi.nic.value;
     var dernierStatut = document.form_res_saisi.dernierStatut.checked;
     var bilan = document.form_res_saisi.bilan;
-    var depotActes = document.form_res_saisi.depotActes.checked;
+    var depotActe = document.form_res_saisi.depotActe;
     var document_data = document.form_res_saisi.document_data;
     var commandes = document.form_res_saisi.commande.checked;
-    var url = "../test/test.php";
+    var modesDiffusion_T = document.form_res_saisi.modesDiffusion_T.checked;
+    var modesDiffusion_XL = document.form_res_saisi.modesDiffusion_XL.checked;
+    var url = "../action/action.php";
     var data = new FormData();
     var msg = document.getElementById("area_responses");
 
 
     var bilans = getSelectValues(bilan);
     var documents = getSelectValues(document_data);
-
+    var depotActes = getSelectValues(depotActe);
 
     if (!dernierStatut && !bilan && !depotActes && !document_data && !commandes) {
         swal({
@@ -45,6 +47,8 @@ function get_data() {
         data.append('depotActes', depotActes);
         data.append('documents_data', documents);
         data.append('commandes', commandes);
+        data.append('modesDiffusion_T', modesDiffusion_T);
+        data.append('modesDiffusion_XL', modesDiffusion_XL);
 
         var ajax = false;
         if (window.XMLHttpRequest) { //Mozilla 浏览器
