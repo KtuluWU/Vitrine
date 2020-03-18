@@ -127,7 +127,7 @@ $documents = $res_vitrine["document"];
                             <?php if ($documents) { ?>
                             <div class="checkbox">
                                 <input type="checkbox" name="commande" id="commande" value="commande">
-                                <label for="commande" class="checkbox_label">Kabis pour les documents choisis</label>
+                                <label for="commande" class="checkbox_label">Kbis pour les documents choisis</label>
                             </div>
                             <div class="modesDiffusion" style="display:none">Modes Diffusion:
                                 <div class="checkbox">
