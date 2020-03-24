@@ -132,7 +132,7 @@ if ($dernierStatut == "true") {echo "<a href=\"#res_vitrine_dernierStatut\" clas
 if ($bilans) {echo "<a href=\"#res_vitrine_bilan\" class=\"link_to_res_part\">Bilan</a>";}
 if ($depotActes) {echo "<a href=\"#res_vitrine_depotActes\" class=\"link_to_res_part\">Dépôt Actes</a>";}
 if ($documents) {echo "<a href=\"#res_vitrine_document\" class=\"link_to_res_part\">Document</a>";}
-if ($commandes == "true") {echo "<a href=\"#res_commande\" class=\"link_to_res_part\">Commande de Kabis</a>";}
+if ($commandes == "true") {echo "<a href=\"#res_commande\" class=\"link_to_res_part\">Commande de Kbis</a>";}
 echo "</div>";
 ?>
 <div class="res_content-block">
