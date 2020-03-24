@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='assets/css/style.css'>
+    <link rel='stylesheet' href='assets/vendor/css/sweet-alert.css'>
+    <link rel='shortcut icon' href='assets/data_favicon.png' />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title> Vitrine </title>
+</head>
+
+<body>
+    <div class="index-container container">
+        <div class="title">Vitrine</div>
+        <div class="subtitle">WebService Commerçant</div>
+        <div class="index-content">
+            <form id="form_siren" name="form_siren" action="" method="POST">
+                <div class="content-input">
+                    <div class="input-block">
+                        <span class="input">
+                            <input class="input_field" type="text" placeholder="Siren a 9 chiffres..." name="siren"
+                                id="siren" autocomplete="off">
+                            <label class="input_label" for="siren"><span
+                                    class="input_label-content">Siren</span></label>
+                        </span>
+                    </div>
+                    <div class="input-block">
+                        <span class="input">
+                            <input class="input_field" type="text" name="nic" id="nic" autocomplete="off">
+                            <label class="input_label" for="nic"><span class="input_label-content">nic
+                                    (option)</span></label>
+                        </span>
+                    </div>
+                </div>
+                <div class="content-button">
+                    <input class="button" type="button" value="Envoyer" name="button" id="button" onclick="get_siren()">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src='assets/js/script.js'></script>
+    <script src='assets/vendor/js/jquery-3.4.1.min.js'></script>
+    <script src='assets/vendor/js/sweet-alert.js'></script>
+    <script src='assets/vendor/js/classie.js'></script>
+    <script>
+        (function () {
+            [].slice.call(document.querySelectorAll('input.input_field')).forEach(function (inputEl) {
+                if (inputEl.value.trim() !== '') {
+                    classie.add(inputEl.parentNode, 'input-filled');
+                }
+
+                // events:
+                inputEl.addEventListener('focus', onInputFocus);
+                inputEl.addEventListener('blur', onInputBlur);
+            });
+
+            function onInputFocus(ev) {
+                classie.add(ev.target.parentNode, 'input-filled');
+            }
+
+            function onInputBlur(ev) {
+                if (ev.target.value.trim() === '') {
+                    classie.remove(ev.target.parentNode, 'input-filled');
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>
