@@ -10,6 +10,8 @@ $soapPassword = $data['soapPassword'];
 
 @$siren = $_POST["siren"];
 @$nic = $_POST["nic"];
+@$code_abonne = $_POST["code_abonne"];
+@$password = $_POST["password"];
 @$dernierStatut = $_POST["dernierStatut"];
 @$depotActes = $_POST["depotActes"];
 @$documents = $_POST["documents_data"];

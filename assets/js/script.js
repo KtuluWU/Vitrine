@@ -3,18 +3,26 @@ console.log("Auteur: Yun WU");
 function get_siren() {
     var siren = document.form_siren.siren.value.replace(/\s+/g, "");
     var nic = document.form_siren.nic.value.replace(/\s+/g, "");
+    var code_abonne = document.form_siren.code_abonne.value;
+    var password = document.form_siren.password.value;
     var url = "./action/vitrine.php";
 
     siren = siren_checked(siren);
 
+    if (password) {
+        password = window.btoa(password);
+    }
+
     if (siren) {
-        window.location.href = url + "?siren=" + siren + "&nic=" + nic;
+        window.location.href = url + "?siren=" + siren + "&nic=" + nic + "&code_abonne=" + code_abonne + "&password_encode=" + password;
     }
 }
 
 function get_data() {
     var siren = document.form_res_saisi.siren.value;
     var nic = document.form_res_saisi.nic.value;
+    var code_abonne = document.form_res_saisi.code_abonne.value;
+    var password = document.form_res_saisi.password.value;
     var dernierStatut = document.form_res_saisi.dernierStatut.checked;
     var bilan = document.form_res_saisi.bilan;
     var depotActe = document.form_res_saisi.depotActe;
@@ -31,6 +39,10 @@ function get_data() {
     var documents = getSelectValues(document_data);
     var depotActes = getSelectValues(depotActe);
 
+    if (password) {
+        password = window.atob(password);
+    }
+
     if (!dernierStatut && !bilan && !depotActes && !document_data && !commandes) {
         swal({
             title: "Échoué!",
@@ -42,6 +54,8 @@ function get_data() {
         document.getElementById("loading_gif").style.display = "block";
         data.append('siren', siren);
         data.append('nic', nic);
+        data.append('code_abonne', code_abonne);
+        data.append('password', password);
         data.append('dernierStatut', dernierStatut);
         data.append('bilans', bilans);
         data.append('depotActes', depotActes);

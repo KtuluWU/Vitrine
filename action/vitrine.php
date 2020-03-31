@@ -9,6 +9,9 @@ $soapPassword = $data['soapPassword'];
 
 $siren = $_GET["siren"];
 $nic = $_GET["nic"];
+$code_abonne = $_GET["code_abonne"];
+$password_encode = $_GET["password_encode"];
+
 
 class vitrineRequest
 {
@@ -156,6 +159,8 @@ $documents = $res_vitrine["document"];
             <div style="display:none">
                 <input name="siren" value="<?php echo $siren ?>">
                 <input name="nic" value="<?php echo $nic ?>">
+                <input name="code_abonne" value="<?php echo $code_abonne ?>">
+                <input name="password" value="<?php echo $password_encode ?>">
             </div>
         </form>
         <div class="loading">
